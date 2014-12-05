@@ -1,0 +1,7 @@
+# Intel compiler (ifort based mpif90), Intel MPI and MKL library
+./config/configure \
+--lapack= \
+--blas= \
+--atlas=-mkl \
+linux64_mpif90_omp_intel_proto
+

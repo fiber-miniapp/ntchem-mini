@@ -1,0 +1,8 @@
+#
+export NTQC_TOP=@NTQC_TOP@
+export HOSTTYPE=@HOSTTYPE@
+export LAPACK=@LAPACK@
+export BLAS=@BLAS@
+export ATLAS=@ATLAS@
+export SCRATCH=@SCRATCH@
+export PARALLEL=@PARALLEL@

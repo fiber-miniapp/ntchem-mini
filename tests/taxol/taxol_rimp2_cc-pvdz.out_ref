@@ -1,0 +1,88 @@
+MPI has been initialized successfully
+The job is running on       2 processes
+Number of local I/O groups:       2
+Number of threads : 12
+ o MP2Type  = RIMP2
+ o OrthType = CHOLESKY
+ o InCore   =  T
+ o Name     = taxol_rimp2_cc-pvdz
+ o NBF      =                   1123
+ o NMO      =                   1123
+ o NOccA    =                    226
+ o NOccB    =                    226
+ o NVirA    =                    897
+ o NVirB    =                    897
+ o NActOA   =                    226
+ o NActOB   =                    226
+ o NActVA   =                    897
+ o NActVB   =                    897
+ o NFrzOA   =                      0
+ o NFrzOB   =                      0
+ o NFrzVA   =                      0
+ o NFrzVB   =                      0
+ o NBF_RI   =                   4186
+ ...   Enter    (RIMP2_Driver    )
+ MP2BatchLv       =                      1
+ NOccBat          =                      4
+ LenOccBat        =                    225
+ NOccBat_per_proc =                      2
+ Batch infomation
+ Alpha MO case
+ Batch NO., NO. of AOs
+         1       225
+         2       224
+         3       224
+         4       224
+ ...   Enter    (RIInt2_Initial  )
+ o IntType  = MD4
+ o ThrInt   =   1.000000000000000E-013
+ o ThrPrim  =   9.999999999999999E-021
+ o PScreen  =  F
+ o ThrPre   =   1.000000000000000E-010
+ o ThrRI    =   1.000000000000000E-006
+ ...   CPU time (RIInt2_Initial  ) :        0.00
+ ...   WALL time (RIMP2_Initial   ) :        0.00
+ ...   Enter    (RIMP2_Tran3c1   )
+ ..... CPU time (3c-RIInt        ) :     1133.12
+ ..... CPU time (1/3 tran3c1     ) :      241.80
+ ..... CPU time (2/3 tran3c1     ) :      209.54
+ ..... CPU time (2/3 tran3c1 comm) :        0.00
+ ..... WALL time (3c-RIInt        ) :      114.39
+ ..... WALL time (1/3 tran3c1     ) :       24.35
+ ..... WALL time (2/3 tran3c1     ) :       21.13
+ ..... WALL time (2/3 tran3c1 comm) :        0.00
+ ...   CPU time (RIMP2_Tran3c1   ) :     1631.54
+ ...   WALL time (RIMP2_Tran3c1   ) :      164.74
+ ...   Enter    (RIMP2_Tran3c2   )
+ ..... Enter    (RIInt2_MDInt2c  )
+ ..... CPU time (RIInt2_MDInt2c  ) :       12.96
+ ..... WALL time (RIInt2_MDInt2c  ) :        1.31
+ ..... Enter    (RIInt2_Inv2c    )
+ ..... CPU time (RIInt2_Inv2c    ) :       16.05
+ ..... WALL time (RIInt2_Inv2c    ) :        1.78
+ ..... CPU time (2/3 tran3c2 comm) :        1.65
+ ..... CPU time (3/3 tran3c2 tran) :      578.49
+ ..... WALL time (2/3 tran3c2 comm) :        1.69
+ ..... WALL time (3/3 tran3c2 tran) :       61.05
+ ...   CPU time (RIMP2_Tran3c2   ) :      618.07
+ ...   WALL time (RIMP2_Tran3c2   ) :       73.36
+ ...   Enter    (RIMP2_RMP2Energy)
+ SCF energy                   =  -2912.07578182458     
+ MP1 energy                   =  0.000000000000000E+000
+ MP2 energy (Singlet corr )   =  -6.75799573369710     
+ MP2 energy (Triplet corr )   =  -2.49726273967196     
+ MP2 energy (Total corr )     =  -9.25525847336906     
+ SCS-MP2 energy (Total corr ) =  -8.94201579366051     
+ Total MP2 energy         =  -2921.33104029795     
+ Total SCS-MP2 energy     =  -2921.01779761824     
+ ..... CPU time (3/3k 2cints comm) :        5.66
+ ..... CPU time (4c Ints         ) :    17468.12
+ ..... CPU time (EMP2 corr.      ) :     1534.27
+ ..... WALL time (3/3k 2cints comm) :        2.75
+ ..... WALL time (4c Ints         ) :     1755.47
+ ..... WALL time (EMP2 corr.      ) :      154.99
+ ...   CPU time (RIMP2_RMP2Energy) :    19016.80
+ ...   WALL time (RIMP2_RMP2Energy) :     1913.54
+ ...   CPU time (RIMP2_Driver    ) :    21267.06
+ ...   WALL time (RIMP2_Driver    ) :     2152.03
+MPI has been terminated

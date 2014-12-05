@@ -1,0 +1,18 @@
+#
+           NTQC_TOP = @NTQC_TOP@
+          LAPACKLIB = @LAPACK@
+            BLASLIB = @BLAS@
+           ATLASLIB = @ATLAS@
+           HOSTTYPE = @HOSTTYPE@
+
+                BIN = @NTQC_TOP@/bin
+                LIB = @NTQC_TOP@/lib
+            INCLUDE = @NTQC_TOP@/include
+              TESTS = @NTQC_TOP@/tests
+            SCRATCH = @SCRATCH@
+           LOCALBIN = .
+           LOCALLIB = .
+           LOCALINC = .
+           PARALLEL = @PARALLEL@
+
+     LDFLAGS_NOMAIN = 

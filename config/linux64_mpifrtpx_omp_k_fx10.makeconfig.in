@@ -1,0 +1,60 @@
+
+             TARGET = LINUX64
+
+             DMACRO = 
+#             DMACRO+=-DSUPPORT_R16
+#             DMACRO+=-DHAVE_ERF
+
+                INC = -I$(INCLUDE) -I$(LOCALINC)
+###                MOD = -J$(LOCALINC) 
+                MOD = 
+	     INCMOD = $(INC) $(MOD)
+
+#           FCONVERT = 
+	    
+               F77C = mpifrtpx
+###           F77FLAGS = $(DMACRO) $(INCMOD) -Kfast -Am -fw -X9 -Fixed
+###      F77FLAGSNOOPT = $(DMACRO) $(INCMOD)        -Am -fw -X9 -Fixed
+           F77FLAGS = $(DMACRO) $(INCMOD) -Kfast -X9 -Fixed
+      F77FLAGSNOOPT = $(DMACRO) $(INCMOD)        -X9 -Fixed
+
+               F90C = mpifrtpx
+###           F90FLAGS = $(DMACRO) $(INCMOD) -Kfast -Am -fw
+###      F90FLAGSNOOPT = $(DMACRO) $(INCMOD)        -Am -fw
+           F90FLAGS = $(DMACRO) $(INCMOD) -Kfast 
+      F90FLAGSNOOPT = $(DMACRO) $(INCMOD)        
+
+          MODSUFFIX = mod
+
+                 CC = fccpx
+             CFLAGS = $(INC) -Kfast
+
+	        CXX = FCCpx
+           CXXFLAGS = $(INC) -Kfast
+             CXXLIB = 
+
+           MPIFLAGS = 
+#           MPIFLAGS = -DMPIINT8
+         MPILDFLAGS = -lmpi_f90 -lmpi_f77
+
+           OMPFLAGS = -Kopenmp
+         OMPLDFLAGS = -Kopenmp
+
+#                 LD = mpifrtpx
+#            LDFLAGS = -L$(LIB)
+                 LD = mpiFCCpx
+            LDFLAGS = --linkfortran -L$(LIB)
+
+                 AR = ar
+            ARFLAGS = cr
+             RANLIB = ranlib
+
+               MAKE = make
+
+              SHELL = /bin/sh
+                 MV = /bin/mv -f
+                 RM = /bin/rm -f
+                 CP = /bin/cp -f
+              MKDIR = /bin/mkdir
+                 LN = /bin/ln
+

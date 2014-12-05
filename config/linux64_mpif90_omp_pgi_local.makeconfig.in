@@ -1,0 +1,57 @@
+
+             TARGET = LINUX64
+
+             DMACRO = 
+#             DMACRO+=-DSUPPORT_R16
+#             DMACRO+=-DHAVE_ERF
+
+                INC = -I$(INCLUDE) -I$(LOCALINC)
+                MOD = -module $(LOCALINC) 
+	     INCMOD = $(INC) $(MOD)
+
+#           FCONVERT = 
+	    
+               F77C = mpif77
+           F77FLAGS = $(DMACRO) $(INCMOD) -i8 -O2 -Mflushz -m64 -pc 64 -mcmodel=medium -Msmartalloc=huge
+      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O0 -Mflushz -m64 -pc 64 -mcmodel=medium -Msmartalloc=huge
+
+               F90C = mpif90
+           F90FLAGS = $(DMACRO) $(INCMOD) -i8 -O2 -Mflushz -m64 -pc 64 -mcmodel=medium -Msmartalloc=huge
+      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O0 -Mflushz -m64 -pc 64 -mcmodel=medium -Msmartalloc=huge
+
+          MODSUFFIX = mod
+
+                 CC = gcc
+             CFLAGS = $(INC) -O3
+
+	        CXX = g++
+           CXXFLAGS = $(INC) -O3
+             CXXLIB = -cxxlib
+
+             MPILIB = 
+           MPIFLAGS = -DMPIINT8 
+         MPILDFLAGS =
+
+           OMPFLAGS =
+         OMPLDFLAGS =
+#            OMPFLAGS = -mp
+#          OMPLDFLAGS = -mp
+
+                 LD = mpif90
+            LDFLAGS = -L$(LIB) -Msmartalloc=huge
+#           LDFLAGS = -L$(LIB)
+     LDFLAGS_NOMAIN = -nofor_main
+
+                 AR = ar
+            ARFLAGS = cr
+             RANLIB = ranlib
+
+               MAKE = make
+
+              SHELL = /bin/sh
+                 MV = /bin/mv -f
+                 RM = /bin/rm -f
+                 CP = /bin/cp -f
+              MKDIR = /bin/mkdir
+                 LN = /bin/ln
+

@@ -2,48 +2,41 @@
 NTChem-mini
 =============
 
-* draft version: 0.9 (based on NTChem/RI-MP2 dated 2014/10/31)
-* update: 2014/11/24
+* version: 1.0 (based on NTChem/RI-MP2 dated 2014/10/31)
+* update: 2014/12/5
 * contact: miniapp@riken.jp
-
 
 About NTChem and NTChem-mini
 --------------------------------
 
-> *この部分は次のURLに書かれた内容から引用・翻訳した。*
-> (河東田さんにチェックを依頼する)
->
-> https://www.bunken.org/msf/page/2013/pdf/4E12_w.pdf
->
-> *annual meeting of Japan Society for Molecular Science (2013)*
+NTChem is a high-performance software package for the molecular electronic
+structure calculation for general purpose on the K computer.
+It is a comprehensive new software of ab initio quantum chemistry made in AICS
+from scratch.
+NTChem contains not only standard quantum chemistry approaches but our own
+original approaches. NTChem is expected to be a useful tool in various
+computational studies for large and complicated molecular systems.
 
-NTChem is a general purpose software package for ab initio quantum chemistry
-applications.
-NTChem is designed to perform the high-performance computation of large scale
-molecular electronic structures on the supercomputers such as K computer.
-It has been developed with much attention paid to the following aspects.
-(1) Develop the theory and algorithm of computational method for the large size
-molecules, the high-performance computing scheme, the high precision computing
-scheme which other quantum chemistry software can not handle.
-(2) Develop the new software based on the above theory and algorithm, release
-in public, and perform the state of the art computations such as the whole
-protein computation composed of 10000+ atom molecules, and/or 
-the detail chemical reaction tracing analysis of the molecular
-composed of 100+ to 1000 atoms.
+For more details, see NTChem official webpage
+<http://labs.aics.riken.jp/nakajimat_top/ntchem_e.html> .
 
-NTChem is developed from scratch as the novel domestic software.
-It includes many theoretical methods newly developed for its own,
-as well as the many features that existing software has.
+NTChem-mini includes a subset of NTChem known as NTChem/RI-MP2 that includes
+the efficient scheme to account for the electron correlations based on the
+resolution of identity second-order Møller–Plesset perturbation (RI-MP2)
+method that enables the computation of the large molecular systems such as
+nano-molecules and biological molecules.
 
-NTChem-mini includes a subset of NTChem known as NTChem/RI-MP2
-that includes the efficient scheme to account for the electron
-correlations based on the resolution of identity second-order Moller Plesset
-perturbation (RI-MP2) method which enables the computation of the large
-molecular systems such as nano-molecules and biological molecules.
 NTChem-mini is a packaged version of NTChem/RI-MP2, including a suite of
 test data, installation write up, and testing procedures.
 
-The parallel program model used in NTChem-mini is MPI and OpenMP.
+For detail explanation of NTChem/RI-MP2, refer to the paper: M. Katouda
+and T. Nakajima, "MPI/OpenMP Hybrid Parallel Algorithm of Resolution of
+Identity Second-Order Møller–Plesset Perturbation Calculation for
+Massively Parallel Multicore Supercomputers",
+J. Chem. Theory Comput. 9, 5373 (2013).
+
+Contact point for NTChem/RI-MP2: Dr. Michio Katouda <mkatouda@riken.jp>
+
 
 
 Installation
@@ -71,22 +64,25 @@ On an appropriate directory, extract the contents using tar command.
     $ cd ./ntchem-rimp2
     $ TOP_DIR=${PWD}
 
-The variable TOP_DIR is used to point the installation directory hereafter .
+The variable TOP_DIR is used to point the extracted top directory
+hereafter .
 This readme file (README.md) is included in the ${TOP_DIR} directory.
 
 
 ####step 2.  Choose config_mine for the installing platform.
 
 In the ${TOP_DIR}/platforms subdirectory, there are several
-config_mine.${COMPILER} files where COMPILER value represents the type of
+config_mine.${TYPE} files where TYPE value represents the type of
 the compiler or the system type of the installing platform.
 These are small text script files which set the minimum path variables
 for compilation.
-Choose one of these config_mine.${COMPILER} files that matches the installing
+Choose one of these config_mine.${TYPE} files that matches the installing
 platform, and copy it as config_mine.
+If the installing platform does not match any of the provided TYPE,
+then create a new config_mine file, based on one of the included
+config_mine.* files.
 
     $ ls -go platforms/config_mine.*
-    -rwxr-xr-x 1 1091 Nov  7 00:00 platforms/config_mine.ANY
     -rwxr-xr-x 1  162 Nov  7 00:00 platforms/config_mine.K
     -rwxr-xr-x 1  140 Nov  7 00:00 platforms/config_mine.RICC
     -rwxr-xr-x 1  124 Nov  7 00:00 platforms/config_mine.Tsubame2
@@ -94,15 +90,16 @@ platform, and copy it as config_mine.
     -rwxr-xr-x 1  246 Nov  7 00:00 platforms/config_mine.gfortran
     -rwxr-xr-x 1  148 Nov  7 00:00 platforms/config_mine.intel
     -rwxr-xr-x 1  156 Nov  7 00:00 platforms/config_mine.pgi
-    $ cp config_mine.${COMPILER} config_mine
-
-If the installing platform does not match any of the provided config_mine.*,
-then use config_mine.ANY and edit it to set the appropriate values.
+    $ TYPE=intel
+    $ cp config_mine.${TYPE} config_mine
 
 Note that NTChem requires BLAS and LAPACK math libraries.
-K, intel and pgi platforms have their own libraries.
-Gfortran(GNU) does not come with such library. For gfortran, ATLAS library is
-assumed to be installed on the platform. See comments in config_mine.gfortran.
+Typically, each TYPE has its own recommended BLAS and LAPACK libraries.
+For example, K computer is best coupled with its native BLAS/LAPACK,
+Intel with MKL, PGI with ACML, Gfortran(GNU) with ATLAS, etc.
+Note that ATLAS library included in the common Linux distribution
+may not perform well, and that freshly compiled ATLAS may perform
+better on the target platform.  See comments in config_mine.gfortran.
 
 
 ####step 3.  Compile and build the executable program
@@ -189,13 +186,6 @@ containing the test data along with the job script.
 	drwxr-xr-x 2    4096 Nov  5 17:53 h2o
 	drwxr-xr-x 2    4096 Nov  5 17:53 taxol
 
-The list of subdirectories and their data type.
-+ directory name: data type
-  - c6h6/	benzene RI-MP2/SVP
-  - h2o/	H2O 10mer RI-MP2/cc-pVTZ
-  - taxol/	taxol RI-MP2/cc-pVDZ
-
-
 Each subdirectory contains a group of input files.
 It also contains the job script examples for several platforms.
 + input files:
@@ -216,6 +206,16 @@ such as Name='taxol_rimp2_cc-pvdz' in "INPUT" file.
 The string value of ${PLATFORM} represents the type of running platform
 or maybe the name of job manager.
 
+The parallel program model used in NTChem-mini is MPI and OpenMP.
+
+Below is the list of subdirectories showing their data type, the computing
+time and the required memory size on a reference system.
+
+|directory| data type           |elapse time|memory size|# of nodes|
+|---------|---------------------|-----------|-----------|----------|
+| c6h6    | benzene RI-MP2/SVP  | 3 seconds |     7 MB  |         1|
+| h2o     | H2O 10mer RI-MP2/cc-pVTZ| 8 seconds|  7 MB  |         1|
+| taxol   | taxol RI-MP2/cc-pVDZ| 10 minutes|    30 MB  |        32|
 
 #### Example: Running the test job on general Linux platform.
 Below is an example of running NTChem-mini interactively using the taxol
@@ -301,8 +301,6 @@ test has been made available for downloading from the following site.
 
 http://hpci-aplfs.aics.riken.jp/fiber/ntchem-mini/ntchem-data-perf.tar.gz
 
-> comments. needs updating the URL above.
-
 #### Setting up the performance test data
 
 After the previous Installation steps are completed, download the performance
@@ -325,6 +323,10 @@ There should be new data file directories under tests_perf/ .
 + buckycatcher data _c60atc60h28_ is most appropriate for the
 performance tests.
 
+|directory   | data type           |elapse time|memory use|# of nodes|
+|------------|---------------------|-----------|-----------|----------|
+| c60atc60h28| buckycatcher C60@C60H28 RI-MP2/cc-pVTZ| 2 hours| 10 GB| 32|
+
 
 #### Running the performance tests
 Like the default test data included in the NTChem-mini package,
@@ -334,8 +336,7 @@ Choose the one that matches the testing plarform.
 Edit it, if necessary, in the same manner as was done for the
 default test data.
 Execute it as a batch job or as a background job.
-The c60atc60h28 buckycatcher job takes about 2 hours using 32 nodes
-on K computer.
+The c60atc60h28 job takes about 2 hours using 32 nodes on K computer.
 
 
 ##### strong scaling tests
@@ -365,21 +366,10 @@ the discussion with the authors of NTChem.
 
 License term
 -----------------------------
-(河東田さんにLicense条項を確認)
 
-The License term of NTChem is provided in the BSD 2-Clause License.
+The License term of NTChem-mini is provided in the BSD 2-Clause License.
 Please refer to "LICENSE" file included in the NTChem-mini package.
-
-
-_ contact person/organizatin for NTChem _
-Contact for inquiry regarding NTChem should be made to:
-
-_ Michio Katouda email: <mkatouda@riken.jp> _
 
 Copyright (c) 2012-2014, Computational Molecular Science Research Team,
 RIKEN Advanced Institute for Computational Science
 
-
-<!-- メモ。HTML を入れちゃうとMarkdownの処理と合わない事があるね、、、
-<style type="text/css" > div { width: 700px; } </style> 
--->

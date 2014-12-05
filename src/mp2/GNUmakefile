@@ -1,0 +1,155 @@
+# Makefile for mp2
+#                     18 Dec 2011 Written  by Michio Katouda
+#                     31 Oct 2014 Modified by Michio Katouda
+#
+include ../../config/makeconfig
+
+# this is to stop m2c command is called
+%.o: %.mod
+
+# Flag for CUDA build
+#NVCC=nvcc
+#NVFLAGS=-arch=sm_35
+ifeq ($(NVCC),nvcc)
+#NVLIB=-L/usr/local/cuda-5.0/lib64 -lcudart -lcublas
+#NVLIB=-L/usr/local/cuda-6.0/lib64 -lcudart -lcublas
+NVLIB=-L/usr/apps.sp3/cuda/6.0/lib64 -lcudart -lcublas
+#F90EXT=-DUSE_MERGE -DUSE_GPU
+F90EXT=-DUSE_MERGE -DUSE_GPU -DDEBUG 
+else
+F90EXT=-DDEBUG
+#F90EXT=-DUSE_MERGE
+#F90EXT=-DUSE_MERGE -DDEBUG
+endif
+
+# Name of executable
+program = rimp2.exe
+
+modules = \
+mp2_module.o \
+mp2_basis_module.o \
+mp2_constant_module.o \
+mp2_parameter_module.o \
+rimp2_module.o \
+rimp2_basis_module.o \
+rimp2_parameter_module.o \
+int2_module.o \
+int2_array_module.o \
+int2_ecoef_module.o \
+int2_gamma_module.o \
+int2_int2e_module.o \
+riint2_module.o
+
+objects_common = \
+mp2_allocate.o \
+mp2_basis_allocate.o \
+mp2_basis_deallocate.o \
+mp2_deallocate.o \
+mp2_facdens.o \
+mp2_indbasis.o \
+mp2_int2_pscreen_allocate.o \
+mp2_ioff.o \
+mp2_mdint2_eri_pscreen_car.o \
+mp2_mdint2_eri_pscreen_sph.o \
+mp2_normbasis.o \
+mp2_sphcoef.o \
+rimp2_basis_allocate.o \
+rimp2_basis_deallocate.o \
+rimp2_deallocate.o \
+rimp2_indbasis.o \
+rimp2_normbasis.o \
+rimp2_riint2_mdint2_eri2c_car.o \
+rimp2_riint2_mdint2_eri2c_sph.o \
+rimp2_riint2_mdint2_eri3c_car.o \
+rimp2_riint2_mdint2_eri3c_sph.o \
+rimp2_mdint2_eri_pscreen_car.o \
+rimp2_mdint2_eri_pscreen_sph.o \
+rimp2_riint2_pscreen_allocate.o \
+int2_allocate.o \
+int2_array_allocate.o \
+int2_basis_allocate.o \
+int2_ecoef_allocate.o \
+int2_gamma_allocate.o \
+int2_int2e_allocate.o \
+int2_deallocate.o \
+int2_array_deallocate.o \
+int2_basis_deallocate.o \
+int2_ecoef_deallocate.o \
+int2_gamma_deallocate.o \
+int2_int2e_deallocate.o \
+int2_incfun.o \
+int2_ccont.o \
+int2_ffunc.o \
+int2_normbasis.o \
+mdint2_cartosph.o \
+mdint2_ecoef1.o \
+mdint2_ecoef2.o \
+mdint2_r0tuv.o \
+riint2_mdint2_ccont.o
+
+objects_mpiomp= \
+mp2_main_mpiomp.o \
+mp2_read_input_mpi.o \
+mp2_maxparam_mpi.o \
+mp2_read_scfinfo_mpi.o \
+mp2_read_geom_mpi.o \
+mp2_read_basis_mpi.o \
+mp2_mdint2_pscreen_mpiomp.o \
+rimp2_driver_semidirect_mpiomp.o \
+rimp2_maxparam_mpi.o \
+rimp2_read_basis_mpi.o \
+rimp2_riint2_read_input_mpi.o \
+rimp2_get_batchinfo_mpi.o \
+rimp2_inv2c_mpi.o \
+rimp2_int2_initial_mpiomp.o \
+rimp2_riint2_final_mpiomp.o \
+rimp2_tran3c1_semidirect_v_mpiomp.o \
+rimp2_tran3c2_semidirect_v_mpiomp.o \
+rimp2_rmp2energy_semidirect_v_mpiomp.o \
+rimp2_riint2_mdint2_int2c_mpiomp.o \
+rimp2_riint2_mdint2_pscreen_mpiomp.o
+
+objects_mpiomp2= \
+rimp2_driver_incore_mpiomp.o \
+rimp2_tran3c1_incore_v_mpiomp.o \
+rimp2_tran3c2_incore_v_mpiomp.o \
+rimp2_rmp2energy_incore_v_mpiomp.o
+
+objects_gpu= \
+cublas-fortran.o
+
+ifeq ($(NVCC),nvcc)
+objects = $(objects_common) $(objects_mpiomp) $(objects_mpiomp2) $(objects_gpu)
+else
+objects = $(objects_common) $(objects_mpiomp) $(objects_mpiomp2)
+endif
+
+all :program mvbin
+
+program : $(modules) $(objects)
+	$(LD) $(LDFLAGS) $(modules) $(objects) \
+        ../util_lib/libutil.a \
+	../parallel_mod/*.o \
+	$(OMPLDFLAGS) $(MPILDFLAGS) $(NVLIB) \
+	$(LAPACKLIB) $(BLASLIB) $(ATLASLIB) \
+	-o $(program)
+
+mvbin :
+	$(MV) $(program) $(BIN)/.
+
+clean :
+	$(RM) *.o *.mod $(BIN)/$(program)
+
+veryclean : clean
+
+.SUFFIXES:.f90
+.f90.o: 
+	$(F90C) $(F90FLAGS) $(F90EXT) $(OMPFLAGS) $(MPIFLAGS) -I$(NTQC_TOP)/src/parallel_mod -c $< 
+
+.SUFFIXES:.F90
+.F90.o: 
+	$(F90C) $(F90FLAGS) $(F90EXT) $(OMPFLAGS) $(MPIFLAGS) -I$(NTQC_TOP)/src/parallel_mod -c $< 
+
+.SUFFIXES:.cu
+.cu.o:
+	$(NVCC) $(NVFLAGS) -c $<

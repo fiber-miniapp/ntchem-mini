@@ -1,0 +1,52 @@
+
+             TARGET = LINUX64
+
+             DMACRO = 
+#             DMACRO+=-DSUPPORT_R16
+#             DMACRO+=-DHAVE_ERF
+
+                INC = -I$(INCLUDE) -I$(LOCALINC)
+                MOD = -J$(LOCALINC) 
+	     INCMOD = $(INC) $(MOD)
+
+#           FCONVERT = 
+	    
+               F77C = mpif77
+           F77FLAGS = $(DMACRO) $(INCMOD) -m64 -fdefault-integer-8 -O2 -std=legacy -DNOQUAD
+      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -m64 -fdefault-integer-8 -std=legacy -DNOQUAD -Wuninitialized -Wall -Wunderflow -fbounds-check
+
+               F90C = mpif90
+           F90FLAGS = $(DMACRO) $(INCMOD) -m64 -fdefault-integer-8 -O2 -std=legacy -DNOQUAD
+      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -m64 -fdefault-integer-8 -std=legacy -Wuninitialized -Wall -Wunderflow -fbounds-check -DNOQUAD
+
+          MODSUFFIX = mod
+
+                 CC = gcc
+             CFLAGS = $(INC) -O3
+
+	        CXX = g++
+           CXXFLAGS = $(INC) -O3
+             CXXLIB = -lstdc++
+
+           MPIFLAGS =  -DMPIINT8
+         MPILDFLAGS =
+
+           OMPFLAGS = -fopenmp
+         OMPLDFLAGS = -fopenmp
+
+                 LD = mpif90 -fc=gfortran
+            LDFLAGS = -L$(LIB) $(MPILIB) -fdefault-integer-8
+
+                 AR = ar
+            ARFLAGS = cr
+             RANLIB = ranlib
+
+               MAKE = make
+
+              SHELL = /bin/sh
+                 MV = /bin/mv -f
+                 RM = /bin/rm -f
+                 CP = /bin/cp -f
+              MKDIR = /bin/mkdir
+                 LN = /bin/ln
+

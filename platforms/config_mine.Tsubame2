@@ -1,0 +1,12 @@
+# LINUX64 mpif90(ifort) (For Tsubame2)
+./config/configure \
+--lapack= \
+--blas= \
+--atlas=-mkl \
+linux64_mpif90_omp_intel_tsubame2
+
+# export MKLPATH=/usr/apps/isv/intel/2013.0.079/mkl/lib/intel64/
+# export MKLPATH=/usr/apps/isv/intel/xe2013.1.039/mkl/lib/intel64/
+# export MKLPATH=/usr/apps/isv/intel/xe2013.1.046/mkl/lib/intel64/
+# --atlas="-R$MKLPATH -L$MKLPATH -lmkl_intel_lp64 -lmkl_pgi_thread -lmkl_core" 
+

@@ -1,0 +1,7 @@
+# LINUX64 mpiifort(ifort) (For AICS common cluster)
+./config/configure \
+--lapack= \
+--blas= \
+--atlas=-mkl \
+linux64_mpiifort_omp
+

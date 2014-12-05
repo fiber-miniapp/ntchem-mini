@@ -1,0 +1,65 @@
+
+             TARGET = LINUX64
+
+             DMACRO = 
+#             DMACRO+=-DSUPPORT_R16
+#             DMACRO+=-DHAVE_ERF
+
+                INC = -I$(INCLUDE) -I$(LOCALINC)
+                MOD = -module $(LOCALINC) 
+	     INCMOD = $(INC) $(MOD)
+
+#           FCONVERT = 
+	    
+               F77C = mpiifort
+###           F77FLAGS = $(DMACRO) $(INCMOD) -i8 -O3 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95 -parallel -par-report2 
+###      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95 -parallel -par-report2 
+###           F77FLAGS = $(DMACRO) $(INCMOD) -i8 -O3 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -check all -warn all -std -fpe0 -ftrapuv -traceback
+###      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -check all -warn all -std -fpe0 -ftrapuv -traceback
+           F77FLAGS = $(DMACRO) $(INCMOD) -i8 -O3 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95
+      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95
+
+               F90C = mpiifort
+###           F90FLAGS = $(DMACRO) $(INCMOD) -i8 -O3 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95 -parallel -par-report2 
+###      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95 -parallel -par-report2 
+###           F90FLAGS = $(DMACRO) $(INCMOD) -i8 -O3 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -check all -warn all -std -fpe0 -ftrapuv -traceback
+###      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -check all -warn all -std -fpe0 -ftrapuv -traceback
+           F90FLAGS = $(DMACRO) $(INCMOD) -i8 -O2 -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95
+      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O -ftz -auto -assume byterecl -vec-report0 -cm -heap-arrays -w95
+
+          MODSUFFIX = mod
+
+                 CC = icc
+###             CFLAGS = $(INC) -O2
+###             CFLAGS = $(INC) -O2 -heap-arrays -parallel -par-report2
+             CFLAGS = $(INC) -O3 -heap-arrays
+
+	        CXX = icc
+###           CXXFLAGS = $(INC) -O2 -parallel -par-report2
+           CXXFLAGS = $(INC) -O3
+             CXXLIB = -cxxlib
+
+             MPILIB = 
+           MPIFLAGS = -DMPIINT8
+         MPILDFLAGS =
+
+           OMPFLAGS = -openmp
+         OMPLDFLAGS = -openmp
+
+                 LD = mpiifort
+            LDFLAGS = -L$(LIB) $(MPILIB)
+     LDFLAGS_NOMAIN = -nofor_main
+
+                 AR = ar
+            ARFLAGS = cr
+             RANLIB = ranlib
+
+               MAKE = make
+
+              SHELL = /bin/sh
+                 MV = /bin/mv -f
+                 RM = /bin/rm -f
+                 CP = /bin/cp -f
+              MKDIR = /bin/mkdir
+                 LN = /bin/ln
+

@@ -1,0 +1,7 @@
+# LINUX64 mpif90(ifort) (For RICC PC cluster)
+./config/configure \
+--lapack=-lapack_t \
+--blas=-blas_t \
+--atlas= \
+linux64_mpif90_omp_intel_ricc
+

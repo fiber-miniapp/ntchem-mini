@@ -1,0 +1,20 @@
+List of test jobs
+
+Directry: Job type
+c6h6: benzene RI-MP2/SVP
+h2o: H2O 10mer RI-MP2/cc-pVTZ
+taxol: taxol RI-MP2/cc-pVDZ
+c60atc60h28: buckycatcher C60@C60H28 RI-MP2/cc-pVTZ
+c24h12_cc-pvtz: nanographene C24H12 RI-MP2/cc-pVTZ
+c24h12x2_cc-pvtz: nanographene dimer (C24H12)2 RI-MP2/cc-pVTZ
+c54h18_cc-pvdz: nanographene C54H18 RI-MP2/cc-pVDZ
+c54h18x2_cc-pvdz: nanographene dimer (C54H18)2 RI-MP2/cc-pVDZ
+c54h18_cc-pvtz: nanographene C54H18 RI-MP2/cc-pVTZ
+c54h18x2_cc-pvtz: nanographene dimer (C54H18)2 RI-MP2/cc-pVTZ
+
+SVP basis set: A. Schaefer, H. Horn, R. Ahlrichs; J. Chem. Phys. 97, 2571 (1992).
+SVP auxiliary basis set: F. Weigend, M. Haeser, H. Patzelt, R. Ahlrichs; Chem. Phys. Lett. 294, 143 (1998).
+cc-pVDZ basis set: T. H. Dunning, Jr; J. Chem. Phys. 90, 1007 (1989).
+cc-pVDZ auxiliary basis set: F. Weigend, A. Kohn, C. Hattig; J. Chem. Phys. 116, 3175 (2002).
+cc-pVTZ basis set: T. H. Dunning, Jr; J. Chem. Phys. 90, 1007 (1989).
+cc-pVTZ auxiliary basis set: F. Weigend, A. Kohn, C. Hattig; J. Chem. Phys. 116, 3175 (2002).

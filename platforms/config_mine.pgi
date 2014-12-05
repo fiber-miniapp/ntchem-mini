@@ -1,0 +1,7 @@
+# PGI compiler based mpif90, ACML library
+./config/configure \
+--lapack="-L${PGI_DIR}/lib -lacml_mp -lacml" \
+--blas= \
+--atlas= \
+linux64_mpif90_omp_pgi_openmpi
+

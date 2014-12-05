@@ -1,0 +1,47 @@
+             TARGET = LINUX64
+             DMACRO = 
+                INC = -I$(INCLUDE) -I$(LOCALINC)
+                MOD = -module $(LOCALINC) 
+	     INCMOD = $(INC) $(MOD)
+	    
+               F77C = mpif77
+           F77FLAGS = $(DMACRO) $(INCMOD) -i8 -O2 -ftz -auto -assume byterecl -vec-report0 -warn nousage -heap-arrays
+      F77FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O0 -ftz -auto -assume byterecl -vec-report0 -warn nousage -heap-arrays
+
+               F90C = mpif90
+           F90FLAGS = $(DMACRO) $(INCMOD) -i8 -O2 -ftz -auto -assume byterecl -vec-report0 -warn nousage -heap-arrays
+      F90FLAGSNOOPT = $(DMACRO) $(INCMOD) -i8 -O0 -ftz -auto -assume byterecl -vec-report0 -warn nousage -heap-arrays
+
+          MODSUFFIX = mod
+
+                 CC = icc
+             CFLAGS = $(INC) -O3
+
+	        CXX = icpc
+           CXXFLAGS = $(INC) -O3
+             CXXLIB = -cxxlib
+
+             MPILIB = 
+           MPIFLAGS = -DMPIINT8 
+         MPILDFLAGS =
+
+           OMPFLAGS = -openmp
+         OMPLDFLAGS = -openmp
+
+                 LD = mpif90
+            LDFLAGS = -L$(LIB)
+     LDFLAGS_NOMAIN = -nofor_main
+
+                 AR = ar
+            ARFLAGS = cr
+             RANLIB = ranlib
+
+               MAKE = make
+
+              SHELL = /bin/sh
+                 MV = /bin/mv -f
+                 RM = /bin/rm -f
+                 CP = /bin/cp -f
+              MKDIR = /bin/mkdir
+                 LN = /bin/ln
+

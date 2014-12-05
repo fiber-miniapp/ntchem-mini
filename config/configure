@@ -1,0 +1,224 @@
+#! /bin/sh
+#
+# NTQC configurator Version: 0.02
+#
+# Edited by Takeshi Yanai Nov.25.2002 
+# Modified by Takahito Nakajima Aug.9.2006
+# Final Modified by Takahito Nakajima Jan.18.2012
+
+CONFIG=.config.sed               #  sed script which configuration finally write down
+
+ntqc_top=`pwd`                   #  top directory for NTQC
+hosttype=NONE                    #  host type
+scratch=/home/$USER/scr/ntchem   #  set default for scratch directory
+lapack=NONE                      #  location for lapack library file
+blas=NONE                        #  location for blas library file
+atlas=NONE                       #  location for atlas library file
+mpi=NONE
+libmpi=NONE
+parallel=mpiomp
+
+# show title and version
+# ----------------------
+echo "NTQC configurator"
+echo
+
+touch ./config.history
+date         >> ./config.history
+whoami       >> ./config.history
+hostname     >> ./config.history
+uname        >> ./config.history
+echo $0 $@   >> ./config.history
+echo         >> ./config.history
+
+# get options and hosttype
+# ------------------------
+prev=
+for option
+do
+
+    # If the previous option needs an argument, assign it.
+    if test -n "$prev"; then
+	eval "$prev=\$option"
+	prev=
+	continue
+    fi
+
+    case "$option" in
+	-*=*) optarg=`echo "$option" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+	*) optarg= ;;
+    esac
+
+    case "$option" in
+
+	-scratch | --scratch )
+	    prev=scratch ;;
+	-scratch=* | --scratch=* )
+	    scratch="$optarg" ;;
+
+	-lapack | --lapack )
+	    prev=lapack ;;
+	-lapack=* | --lapack=* )
+	    lapack="$optarg" ;;
+
+	-blas | --blas )
+	    prev=blas ;;
+	-blas=* | --blas=* )
+	    blas="$optarg" ;;
+
+	-atlas | --atlas )
+	    prev=atlas ;;
+	-atlas=* | --atlas=* )
+	    atlas="$optarg" ;;
+
+	-mpi | --mpi )
+	    prev=mpi ;;
+	-mpi=* | --mpi=* )
+	    mpi="$optarg" ;;
+
+	-libmpi | --libmpi )
+	    prev=libmpi ;;
+	-libmpi=* | --libmpi=* )
+	    libmpi="$optarg" ;;
+
+	-help | --help)
+	    cat << EOF
+Usage: configure [options] [hosttype]
+
+Options: 
+
+  --scratch=[dir path]               set the default scratch directory path
+                                     default is /work/$USER
+  --lapack=[file path]               (option) set the file path for LAPACK library
+  --blas=[file path]                 (option) set the file path for BLAS library
+  --atlas=[file path]                (option) set the file path for ATLAS library
+  --mpi=[MPI prefix path]            if you use MPI, 
+                                     set the prefix path where MPI is installed 
+  --libmpi=[MPI lib name]            (optoin) default is "" (None). 
+  --help                             print this message
+
+Host type:
+
+   hosttype       arch       description
+   -------------- -------- - ---------------------------------------------
+   aix64          rs6000     AIX 64bit
+   aix64_omp      rs6000     AIX 64bit
+ 
+EOF
+            exit 0 ;;
+
+        -*) 
+            echo "configure: error: $option: invalid option; use --help to show usage" 1>&2
+            exit 1 ;;
+
+        *)
+            if test -n "`echo $option| sed 's/[-a-zA-Z0-9._]//g'`"; then
+                echo "configure: warning: $option: invalid options" 1>&2
+            fi
+            if test "x$hosttype" != xNONE; then
+                echo "configure: error: can only configure for one host and one target at a time" 1>&2
+                exit 1
+            fi
+            hosttype="$option" ;;
+
+    esac
+
+done
+
+# set default hosttype if hosttype==NONE
+# --------------------------------------
+if test "x$hosttype" = xNONE; then
+	    printf "\nhosttype should explicitly be given.\n\n"
+	    exit 1
+fi
+
+# ntqc_top   : top directory path of NTQC
+# hosttype   : hosttype
+# scratch    : default scratch directory path
+# lapack     : the file path for LAPACK library
+# blas       : the file path for BLAS library
+# atlas      : the file path for ATLAS library
+# mpi        : mpi prefix path
+# libmpi     : mpilib name
+
+echo "checking Looking for the config files for host type:" ${hosttype}
+
+printf "checking "
+ls ./config/${hosttype}.makeconfig.in
+printf "checking "
+ls ./config/${hosttype}.config.sh.in
+if test -e ./config/${hosttype}.makeconfig.in -a -e ./config/${hosttype}.config.sh.in; then
+echo "checking Config files have been found for 'makeconfig' and 'config.sh' as above."
+else
+echo "No config files ..."
+exit 1
+fi
+
+. ./config/${hosttype}.config.sh.in
+
+if test "x$lapack" = xNONE; then
+    lapack_comp=YES
+    lapack=$ntqc_top/lib/${TARGET}/liblapack.a
+fi
+
+if test "x$blas" = xNONE; then
+    blas_comp=YES
+    blas=$ntqc_top/lib/${TARGET}/libblas.a
+fi
+
+if test "x$libmpi" = xNONE; then
+    libmpi=""
+fi
+
+if test "x$mpi" = xNONE; then
+if test "x$USE_MPI" = xyes; then
+    echo 
+    echo "Error: You should add the option --mpi=... (see ./configure --help)"
+    exit 1    
+fi
+fi
+
+if test "x$atlas" = xNONE; then
+    atlas=""
+fi
+
+echo
+echo "   Top directory     : " $ntqc_top
+echo "   Host type         : " $hosttype
+echo "   TARGET            : " ${TARGET}
+echo "   Scratch directory : " $scratch
+echo "   LAPCK file path   : " $lapack
+echo "   BLAS file path    : " $blas
+echo "   ATLAS file path   : " $atlas
+if test "x$USE_MPI" = xyes; then
+echo "   MPI prefix        : " $mpi
+echo "   LIBMPI            : " $libmpi
+fi
+echo "   Parallel type     : " $parallel
+echo
+
+rm -f $CONFIG
+touch $CONFIG
+echo "s%@TARGET@%${TARGET}%g" >> $CONFIG
+echo "s%@NTQC_TOP@%${ntqc_top}%g" >> $CONFIG
+echo "s%@HOSTTYPE@%${hosttype}%g" >> $CONFIG
+echo "s%@SCRATCH@%${scratch}%g" >> $CONFIG
+echo "s%@LAPACK@%${lapack}%g" >> $CONFIG
+echo "s%@BLAS@%${blas}%g" >> $CONFIG
+echo "s%@ATLAS@%${atlas}%g" >> $CONFIG
+echo "s%@MPI@%${mpi}%g" >> $CONFIG
+echo "s%@LIBMPI@%${libmpi}%g" >> $CONFIG
+echo "s%@PARALLEL@%${parallel}%g" >> $CONFIG
+
+echo "creating ./config/config.sh"
+rm -f ./config/config.sh > /dev/null 2>&1
+touch ./config/config.sh > /dev/null 2>&1
+cat ./config/general.config.sh.in | sed -f .config.sed >> ./config/config.sh
+cat ./config/${hosttype}.config.sh.in  | sed -f .config.sed >> ./config/config.sh
+
+echo "creating ./config/makeconfig"
+rm -f ./config/makeconfig > /dev/null 2>&1
+touch ./config/makeconfig > /dev/null 2>&1
+cat ./config/general.makeconfig.in | sed -f .config.sed >> ./config/makeconfig
+cat ./config/${hosttype}.makeconfig.in  | sed -f .config.sed >> ./config/makeconfig
+

@@ -1,0 +1,40 @@
+      SUBROUTINE Int2_Deallocate
+!
+      USE Int2_Module, ONLY : PreFactAB, PreFactCD, CCoefAB, CCoefCD, CContAB, CContCD, PX, PY, PZ, &
+     &   PAX, PAY, PAZ, PBX, PBY, PBZ, QX, QY, QZ, QCX, QCY, QCZ, QDX, QDY, QDZ, &
+     &   ExpntA, ExpntB, ExpntC, ExpntD, ExpntP, ExpntQ
+!
+      IMPLICIT NONE
+!
+      DEALLOCATE(PreFactAB)
+      DEALLOCATE(PreFactCD)
+      DEALLOCATE(CCoefAB)
+      DEALLOCATE(CCoefCD)
+      DEALLOCATE(CContAB)
+      DEALLOCATE(CContCD)
+      DEALLOCATE(PX)
+      DEALLOCATE(PY)
+      DEALLOCATE(PZ)
+      DEALLOCATE(PAX)
+      DEALLOCATE(PAY)
+      DEALLOCATE(PAZ)
+      DEALLOCATE(PBX)
+      DEALLOCATE(PBY)
+      DEALLOCATE(PBZ)
+      DEALLOCATE(QX)
+      DEALLOCATE(QY)
+      DEALLOCATE(QZ)
+      DEALLOCATE(QCX)
+      DEALLOCATE(QCY)
+      DEALLOCATE(QCZ)
+      DEALLOCATE(QDX)
+      DEALLOCATE(QDY)
+      DEALLOCATE(QDZ)
+      DEALLOCATE(ExpntA)
+      DEALLOCATE(ExpntB)
+      DEALLOCATE(ExpntC)
+      DEALLOCATE(ExpntD)
+      DEALLOCATE(ExpntP)
+      DEALLOCATE(ExpntQ)
+!
+      END SUBROUTINE
