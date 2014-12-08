@@ -370,6 +370,4 @@ License term
 The License term of NTChem-mini is provided in the BSD 2-Clause License.
 Please refer to "LICENSE" file included in the NTChem-mini package.
 
-Copyright (c) 2012-2014, Computational Molecular Science Research Team,
-RIKEN Advanced Institute for Computational Science
 
