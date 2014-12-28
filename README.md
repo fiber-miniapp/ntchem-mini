@@ -2,8 +2,8 @@
 NTChem-mini
 =============
 
-* version: 1.0 (based on NTChem/RI-MP2 dated 2014/10/31)
-* update: 2014/12/5
+* version: 1.1 (based on NTChem/RI-MP2 dated 2014/10/31)
+* update: 2014/12/28 (bug fix rimp2_rmp2energy_incore_v_mpiomp.F90)
 * contact: miniapp@riken.jp
 
 About NTChem and NTChem-mini
@@ -54,14 +54,14 @@ installing platform.
 
 ####step 1. Obtain the distribution package.
 
-Obtain the NTChem-mini package file "ntchem-mini-1.0.tar.gz" from the Fiber
+Obtain the NTChem-mini package file "ntchem-mini-1.1.tar.gz" from the Fiber
 distribution site.
 + http://fiber-miniapp.github.io/
 
 On an appropriate directory, extract the contents using tar command.
 
-    $ tar -zxf ntchem-mini-1.0.tar.gz
-    $ cd ./ntchem-rimp2
+    $ tar -zxf ntchem-mini-1.1.tar.gz
+    $ cd ./ntchem-mini
     $ TOP_DIR=${PWD}
 
 The variable TOP_DIR is used to point the extracted top directory
@@ -107,7 +107,7 @@ better on the target platform.  See comments in config_mine.gfortran.
 In the ${TOP_DIR} directory, choose or edit the config_mine file as above,
 execute config_mine script and make command.
 
-    $ make distclean
+    $ make clean
     $ ./config_mine
     $ make
     $ ls -go bin/rimp2.exe 
@@ -122,7 +122,7 @@ created in the same directory.
 
 Below is an example of compiling on K computer.
 
-    $ make distclean
+    $ make clean
     $ cp platforms/config_mine.K config_mine
     $ ./config_mine
     $ make
@@ -137,7 +137,7 @@ with module environment.
 
     $ module load intel impi mkl
     $ cp platforms/config_mine.intel config_mine
-    $ make distclean
+    $ make clean
     $ ./config_mine
     $ make
     $ ls -go bin/rimp2.exe 
@@ -167,7 +167,7 @@ actual path on the installing platform.
     $ source ${I_MPI_ROOT}/bin64/mpivars.sh
     $ export MKLROOT=/usr/local/intel/composer_xe_2013/mkl
     $ source ${MKLROOT}/bin/mklvars.sh intel64
-    $ make distclean
+    $ make clean
     $ cp platforms/config_mine.intel config_mine
     $ ./config_mine
     $ make
@@ -370,4 +370,6 @@ License term
 The License term of NTChem-mini is provided in the BSD 2-Clause License.
 Please refer to "LICENSE" file included in the NTChem-mini package.
 
+Copyright (c) 2012-2014, Computational Molecular Science Research Team,
+RIKEN Advanced Institute for Computational Science
 

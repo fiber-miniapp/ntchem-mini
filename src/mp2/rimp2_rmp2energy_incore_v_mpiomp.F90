@@ -13,6 +13,10 @@
 !
       INCLUDE 'mpif.h'
 !
+#ifdef MPIINT8
+#define MPI_INTEGER MPI_INTEGER8
+#endif
+!
       INTEGER, PARAMETER :: IO = 99
       CHARACTER(LEN=255) :: FBuf
       REAL(8) :: E2TP, E2SP, E2Tab, E2Sab
@@ -300,12 +304,12 @@
 !
 !           o Communicate three-center MO integral (jb|Q) with each process
 !
-            WTimeBgn = MPI_WTIME()
-            CALL CPU_TIME(TimeBgn)
+!            WTimeBgn = MPI_WTIME()
+!            CALL CPU_TIME(TimeBgn)
 
             MOInt3ck => RecvBuf
 
-            if ( Jrank_diff /= Nprocs_half ) then
+            if ( (Jrank_diff /= NProcs_half) .OR. (NProcs_half == 0) ) then
                ! call non-blocking MPI reqs to exchange data that will be used at next iteratoin (not for now)
                RecvBufId = mod(Jrank_diff, 2) + 1
                SendBuf => MOInt3ck
@@ -316,10 +320,10 @@
                ! CALL MPI_IRecv(RecvBuf, NMOInt3BufSize, MPI_DOUBLE_PRECISION, Jrankrecv_1, 0, MPI_COMM_MO, ireq(2), IErr)
             endif
 
-            CALL CPU_TIME(TimeEnd)
-            WTimeEnd = MPI_WTIME()
-            Time_T3C = Time_T3C + TimeEnd - TimeBgn
-            WTime_T3C = WTime_T3C + WTimeEnd - WTimeBgn
+!            CALL CPU_TIME(TimeEnd)
+!            WTimeEnd = MPI_WTIME()
+!            Time_T3C = Time_T3C + TimeEnd - TimeBgn
+!            WTime_T3C = WTime_T3C + WTimeEnd - WTimeBgn
 !
             IaBatBg = MyRankMO * NOccBat_per_Proc
             IF (ExchIBat .AND. (MyRankMO <= Jrankrecv)) THEN
@@ -382,6 +386,8 @@
                endif
 #endif
 
+               WTimeBgn = MPI_WTIME()
+               CALL CPU_TIME(TimeBgn)
                commPhase = 1
                if ( commSizeEach(commPhase) > 0 ) then
                   CALL MPI_ISend(SendBuf(1,commIndexEach(commPhase)), commSizeEach(commPhase), &
@@ -389,6 +395,10 @@
                   CALL MPI_IRecv(RecvBuf(1,commIndexEach(commPhase)), commSizeEach(commPhase), &
                        MPI_DOUBLE_PRECISION, Jrankrecv_1, commPhase, MPI_COMM_MO, ireq(2), IErr)
                endif
+               CALL CPU_TIME(TimeEnd)
+               WTimeEnd = MPI_WTIME()
+               Time_T3C = Time_T3C + TimeEnd - TimeBgn
+               WTime_T3C = WTime_T3C + WTimeEnd - WTimeBgn
 
                !
                !
@@ -540,6 +550,8 @@
                         CALL MPI_Wait(ireq(2), istat2, IErr)
                      endif
 
+                     WTimeBgn = MPI_WTIME()
+                     CALL CPU_TIME(TimeBgn)
                      commPhase = LNumber + 1
                      if ( commPhase <= commCount .and. commSizeEach(commPhase) > 0 ) then
                         CALL MPI_ISend(SendBuf(1,commIndexEach(commPhase)), commSizeEach(commPhase), &
@@ -547,6 +559,10 @@
                         CALL MPI_IRecv(RecvBuf(1,commIndexEach(commPhase)), commSizeEach(commPhase), &
                              MPI_DOUBLE_PRECISION, Jrankrecv_1, commPhase, MPI_COMM_MO, ireq(2), IErr)
                      endif
+                     CALL CPU_TIME(TimeEnd)
+                     WTimeEnd = MPI_WTIME()
+                     Time_T3C = Time_T3C + TimeEnd - TimeBgn
+                     WTime_T3C = WTime_T3C + WTimeEnd - WTimeBgn
 
 #ifdef USE_GPU
                      call cublas_st_sync( id_st )
@@ -629,6 +645,8 @@
                         CALL MPI_Wait(ireq(2), istat2, IErr)
                      endif
 
+                     WTimeBgn = MPI_WTIME()
+                     CALL CPU_TIME(TimeBgn)
                      commPhase = LNumber + 1
                      if ( commPhase <= commCount .and. commSizeEach(commPhase) > 0 ) then
                         CALL MPI_ISend(SendBuf(1,commIndexEach(commPhase)), commSizeEach(commPhase), &
@@ -636,6 +654,10 @@
                         CALL MPI_IRecv(RecvBuf(1,commIndexEach(commPhase)), commSizeEach(commPhase), &
                              MPI_DOUBLE_PRECISION, Jrankrecv_1, commPhase, MPI_COMM_MO, ireq(2), IErr)
                      endif
+                     CALL CPU_TIME(TimeEnd)
+                     WTimeEnd = MPI_WTIME()
+                     Time_T3C = Time_T3C + TimeEnd - TimeBgn
+                     WTime_T3C = WTime_T3C + WTimeEnd - WTimeBgn
                enddo
 
 !
