@@ -2,8 +2,8 @@
 NTChem-mini
 =============
 
-* version: 1.1 (based on NTChem/RI-MP2 dated 2014/10/31)
-* update: 2014/12/28 (bug fix rimp2_rmp2energy_incore_v_mpiomp.F90)
+* version: 1.2 (based on NTChem/RI-MP2 dated 2014/10/31)
+* update: 2019/3/20 (Web address for the separate large data sets changed)
 * contact: miniapp@riken.jp
 
 About NTChem and NTChem-mini
@@ -11,14 +11,14 @@ About NTChem and NTChem-mini
 
 NTChem is a high-performance software package for the molecular electronic
 structure calculation for general purpose on the K computer.
-It is a comprehensive new software of ab initio quantum chemistry made in AICS
+It is a comprehensive new software of ab initio quantum chemistry made in R-CCS
 from scratch.
 NTChem contains not only standard quantum chemistry approaches but our own
 original approaches. NTChem is expected to be a useful tool in various
 computational studies for large and complicated molecular systems.
 
 For more details, see NTChem official webpage
-<http://labs.aics.riken.jp/nakajimat_top/ntchem_e.html> .
+<http://molsc.riken.jp/ntchem_e.html> .
 
 NTChem-mini includes a subset of NTChem known as NTChem/RI-MP2 that includes
 the efficient scheme to account for the electron correlations based on the
@@ -299,7 +299,7 @@ data.
 A separate file containing the molecular data suitable for such performance
 test has been made available for downloading from the following site.
 
-http://hpci-aplfs.aics.riken.jp/fiber/ntchem-mini/ntchem-data-perf.tar.gz
+https://hpci-aplfs.r-ccs.riken.jp/fiber/ntchem-mini/ntchem-data-perf.tar.gz
 
 #### Setting up the performance test data
 
@@ -370,6 +370,6 @@ License term
 The License term of NTChem-mini is provided in the BSD 2-Clause License.
 Please refer to "LICENSE" file included in the NTChem-mini package.
 
-Copyright (c) 2012-2014, Computational Molecular Science Research Team,
-RIKEN Advanced Institute for Computational Science
+Copyright (c) 2012-2019, Computational Molecular Science Research Team,
+RIKEN Center for Computational Science
 
